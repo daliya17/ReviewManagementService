@@ -2,9 +2,9 @@ package com.review.reviewManagementService.controllers;
 
 import com.review.reviewManagementService.dtos.CreateReviewRequestDto;
 import com.review.reviewManagementService.models.Review;
+import com.review.reviewManagementService.models.User;
 import com.review.reviewManagementService.services.ReviewService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,8 +33,8 @@ public class ReviewController {
         return new ResponseEntity<>(review, HttpStatus.OK);
     }
 
-    @GetMapping("/getAllReviews/{id}")
-    public ResponseEntity<List<Review>> getAllReviews(@PathVariable("id") Long serviceId) {
+    @GetMapping("/getAllReviews/{serviceId}")
+    public ResponseEntity<List<Review>> getAllReviews(@PathVariable("serviceId") Long serviceId) {
         return new ResponseEntity<>(reviewService.getAllReviews(serviceId), HttpStatus.OK);
     }
 
@@ -50,15 +50,15 @@ public class ReviewController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PatchMapping("{id}/like")
-    public ResponseEntity<Review> likeReview(@PathVariable("id") String id) throws Exception {
-        Review review = reviewService.likeReview(id);
+    @PatchMapping("{reviewId}/like")
+    public ResponseEntity<Review> likeReview(@PathVariable("reviewId") String id, @RequestBody User user) throws Exception {
+        Review review = reviewService.likeReview(id, user);
         return new ResponseEntity<>(review, HttpStatus.OK);
     }
 
-    @PatchMapping("{id}/dislike")
-    public ResponseEntity<Review> dislikeReview(@PathVariable("id") String id) throws Exception {
-        Review review = reviewService.dislikeReview(id);
+    @PatchMapping("{reviewId}/unlike")
+    public ResponseEntity<Review> unlikeReview(@PathVariable("reviewId") String id, @RequestBody User user) throws Exception {
+        Review review = reviewService.unlikeReview(id, user);
         return new ResponseEntity<>(review, HttpStatus.OK);
     }
 

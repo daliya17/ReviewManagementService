@@ -2,6 +2,7 @@ package com.review.reviewManagementService.services;
 
 import com.review.reviewManagementService.dtos.CreateReviewRequestDto;
 import com.review.reviewManagementService.models.Review;
+import com.review.reviewManagementService.models.User;
 import com.review.reviewManagementService.repositories.ReviewRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class ReviewService {
     public Review createReview(CreateReviewRequestDto createReviewRequestDto) {
 
         Optional<Review> existingReview = reviewRepository.findByUserIdAndServiceId(createReviewRequestDto.getUserId(), createReviewRequestDto.getServiceId());
-        if (existingReview.isPresent()) {
+        if (!existingReview.isEmpty()) {
             existingReview.get().setComment(createReviewRequestDto.getComment());
             existingReview.get().setRating(createReviewRequestDto.getRating());
             return reviewRepository.save(existingReview.get());
@@ -59,21 +60,21 @@ public class ReviewService {
         reviewRepository.deleteById(id);
     }
 
-    public Review likeReview(String id) throws Exception {
+    public Review likeReview(String id, User user) throws Exception {
         Optional<Review> review = reviewRepository.findById(id);
         if (review.isEmpty()) {
             throw new Exception("Review Not Found");
         }
-        review.get().setLikeCount(review.get().getLikeCount() + 1);
+        review.get().addLike(user);
         return reviewRepository.save(review.get());
     }
 
-    public Review dislikeReview(String id) throws Exception {
+    public Review unlikeReview(String id, User user) throws Exception {
         Optional<Review> review = reviewRepository.findById(id);
         if (review.isEmpty()) {
             throw new Exception("Review Not Found");
         }
-        review.get().setLikeCount(review.get().getLikeCount() - 1);
+        review.get().unlike(user);
         return reviewRepository.save(review.get());
 
     }
