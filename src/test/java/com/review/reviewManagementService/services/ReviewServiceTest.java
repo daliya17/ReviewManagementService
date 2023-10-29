@@ -132,7 +132,7 @@ class ReviewServiceTest {
         doReturn(review).when(reviewRepository).save(any());
 
         Review response = reviewService.likeReview("1", user);
-        assertEquals(likes, response.getLikes());
+        assertEquals(likes-1, response.getLikes());
     }
 
     @Test

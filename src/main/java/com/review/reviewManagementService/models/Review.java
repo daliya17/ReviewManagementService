@@ -38,6 +38,8 @@ public class Review {
         if (!likedByUserIds.contains(user)) {
             likedByUserIds.add(user);
             likes++;
+        } else {
+            unlike(user);
         }
     }
 
