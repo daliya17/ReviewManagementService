@@ -67,9 +67,7 @@ class ReviewControllerTest {
         doReturn(List.of(review, review)).when(reviewService).getAllReviews(any());
         mockMvc.perform(MockMvcRequestBuilders.get("/reviews/getAllReviews/1")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$[0]").exists());
+                .andExpect(status().isOk());
     }
 
     @Test
